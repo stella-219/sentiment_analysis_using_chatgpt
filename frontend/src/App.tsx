@@ -10,7 +10,7 @@ const App: React.FC = () => {
 
   const api_url = process.env.REACT_APP_API_URL; 
 
-  {/* Upload file: Populate the content from csv file into text box */}
+  // Upload file: Populate the content from csv file into text box
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -26,7 +26,7 @@ const App: React.FC = () => {
     }
   };
 
-  {/* Analyze text: Perform analysis by line */}
+  // Analyze text: Perform analysis by line
   const analyzeText = async () => {
     if (!text.trim()) {
       setError("Error: Please upload a file or enter text for analysis.");
@@ -54,7 +54,7 @@ const App: React.FC = () => {
     setSaveMessage(""); // Clear save message
   };
 
-  {/* SaveHistory: Save analysis file in the designated directory */}
+  // SaveHistory: Save analysis file in the designated directory
   const saveHistory = async () => {
     try {
       const response = await axios.get(`${api_url}/api/save`);
