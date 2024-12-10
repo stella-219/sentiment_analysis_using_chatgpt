@@ -10,7 +10,11 @@ load_dotenv()
 
 # Initialize Flask app
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+# Allow CORS for both the deployed frontend and local development
+CORS(app, resources={r"/*": {"origins": [
+    "https://sentimentanalysisusingchatgpt.netlify.app",  # Deployed frontend
+    "http://localhost:3000"  # Local frontend
+]}})
 
 #Configure OpenAI api key
 openai.api_key = os.getenv("OPENAI_API_KEY")
