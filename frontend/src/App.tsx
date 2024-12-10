@@ -6,6 +6,7 @@ const App: React.FC = () => {
   const [results, setResults] = useState<string[]>([]);
   const [error, setError] = useState<string>("");
   const [saveMessage, setSaveMessage] = useState<string>("");
+  const [showResults, setShowResults] = useState<boolean>(false);
 
   {/* Upload file: Populate the content from csv file into text box */}
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
         setText(content); // Populate textarea with file content
         setResults([]); // Clear previous results
         setError("");
+        setShowResults(false);
       };
       reader.readAsText(file);
     }
@@ -26,10 +28,13 @@ const App: React.FC = () => {
   const analyzeText = async () => {
     if (!text.trim()) {
       setError("Error: Please upload a file or enter text for analysis.");
+      setShowResults(false);
       return;
     }
 
     setError(""); // Clear previous error
+    setShowResults(false);
+
     const lines = text.split("\n").filter((line) => line.trim() !== "");
     const analysisResults: string[] = [];
 
@@ -43,6 +48,7 @@ const App: React.FC = () => {
     }
 
     setResults(analysisResults);
+    setShowResults(true); // Show results after analysis is complete
     setSaveMessage(""); // Clear save message
   };
 
@@ -61,6 +67,7 @@ const App: React.FC = () => {
     setResults([]);
     setError("");
     setSaveMessage("");
+    setShowResults(false); 
   };
 
   return (
@@ -162,16 +169,18 @@ const App: React.FC = () => {
         {error && <p className="text-danger text-center">{error}</p>}
 
         {/* Results */}
-        <div className="mt-4 text-center">
-          <h6>Analysis Results:</h6>
-          <ul className="list-group">
-            {results.map((result, index) => (
-              <li key={index} className="list-unstyled">
-                {result}
-              </li>
-            ))}
-          </ul>
-        </div>
+        {showResults && (
+          <div className="mt-4 text-center">
+            <h6>Analysis Results:</h6>
+            <ul className="list-group">
+              {results.map((result, index) => (
+                <li key={index} className="list-unstyled">
+                  {result}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* Save Message */}
         {saveMessage && <p className="text-info text-center mt-4">{saveMessage}</p>}
