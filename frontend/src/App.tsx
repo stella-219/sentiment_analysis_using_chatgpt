@@ -8,6 +8,8 @@ const App: React.FC = () => {
   const [saveMessage, setSaveMessage] = useState<string>("");
   const [showResults, setShowResults] = useState<boolean>(false);
 
+  const api_url = process.env.REACT_APP_API_URL; 
+
   {/* Upload file: Populate the content from csv file into text box */}
   const uploadFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -40,7 +42,7 @@ const App: React.FC = () => {
 
     for (const line of lines) {
       try {
-        const response = await axios.post("http://127.0.0.1:5000/api/analyze", { text: line });
+        const response = await axios.post(`${api_url}/api/analyze`, { text: line });
         analysisResults.push(`"${line}": ${response.data.result}`);
       } catch (err) {
         analysisResults.push(`"${line}": Error analyzing text.`);
@@ -55,7 +57,7 @@ const App: React.FC = () => {
   {/* SaveHistory: Save analysis file in the designated directory */}
   const saveHistory = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:5000/api/save");
+      const response = await axios.get(`${api_url}/api/save`);
       setSaveMessage(response.data.message);
     } catch (err) {
       setError("Error saving history. Please try again.");
